@@ -1,0 +1,12 @@
+services:
+  backend:
+    build: {context: ., dockerfile: docker/Dockerfile}
+    ports: ["8000:8000"]
+    environment: [DATABASE_URL=sqlite:///./roadvision.db, CORS_ORIGINS=http://localhost:5173]
+    volumes: [./backend/models:/app/models, ./backend/uploads:/app/uploads, ./backend/results:/app/results, ./backend/reports:/app/reports]
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes: [./frontend:/app]
+    ports: ["5173:5173"]
+    command: sh -c "npm install && npm run dev -- --host 0.0.0.0"

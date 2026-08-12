@@ -1,0 +1,53 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environments
+venv/
+.venv/
+
+# YOLO model weights
+*.pt
+*.pth
+*.onnx
+
+# Training outputs
+runs/
+training/runs/
+
+# Dataset files
+dataset/
+train/
+valid/
+test/
+
+# Generated backend files
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+backend/results/*
+!backend/results/.gitkeep
+
+backend/reports/*
+!backend/reports/.gitkeep
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Node
+node_modules/
+dist/
+
+# IDE
+.vscode/
+
+# Logs
+*.log
