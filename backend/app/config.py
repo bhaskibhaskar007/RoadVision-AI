@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     iou_threshold: float = 0.70
     max_upload_size_mb: int = 100
     process_every_n_frames: int = 3
-    cors_origins: str = "http://localhost:5173"
+    cors_origins: str = "http://localhost:5173,https://roadvision-ai-1vf0.onrender.com"
     demo_mode: bool = False
     upload_dir: Path = BASE_DIR / "uploads"
     results_dir: Path = BASE_DIR / "results"
