@@ -1,1 +1,893 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&display=swap');*{box-sizing:border-box}body{margin:0;background:#09131a;color:#edf6f4;font-family:Manrope,Arial}.shell{display:flex;min-height:100vh}aside{width:245px;padding:28px 16px;background:#0c1920;border-right:1px solid #1b3037;display:flex;flex-direction:column}.brand{font-size:19px;font-weight:800;margin:0 12px 44px}.brand span,.brand b{color:#36c6a3}nav{display:grid;gap:5px}button{border:0;border-radius:9px;padding:12px 14px;background:#36c6a3;color:#06211b;font-weight:800;cursor:pointer;font:inherit}nav button,.logout{display:flex;gap:12px;align-items:center;background:transparent;color:#aabdb9;text-align:left}.active,nav button:hover{background:#173038!important;color:#fff!important}.logout{margin-top:auto}.page{padding:54px clamp(24px,5vw,80px);max-width:1280px;width:100%}header h1,.auth h1{font-size:clamp(30px,4vw,46px);margin:8px 0}header>p:last-child,.auth section>p{color:#91a8a4;max-width:620px}.eyebrow{font:12px 'DM Mono';letter-spacing:.14em;color:#36c6a3}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:38px 0}.cards article,.chart,.result>section,.upload,.camera,.table{background:#102129;border:1px solid #1c363d;border-radius:14px;padding:22px}.cards span{display:block;color:#9ab0ac;font-size:13px}.cards strong{font-size:28px;display:block;margin-top:11px}.chart{max-width:800px}.chart h3{margin-top:0}.upload,.camera{margin-top:36px;text-align:center;max-width:690px;padding:52px}.upload input{display:block;margin:20px auto}.upload button{display:block;margin:22px auto 0}.result{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;margin-top:35px}.result img{width:100%;border-radius:14px;border:1px solid #244049;max-height:550px;object-fit:contain;background:#000}.small{grid-template-columns:1fr 1fr;margin:16px 0}.small article{padding:15px}.detection{border-top:1px solid #284148;padding:15px 0;display:flex;justify-content:space-between}.detection span{color:#a6b8b5;font-size:13px}.button{display:inline-block;margin-top:16px;background:#36c6a3;color:#06211b;padding:12px 14px;border-radius:9px;text-decoration:none;font-weight:800}.table{margin-top:30px}.row{width:100%;display:grid;grid-template-columns:2fr 2fr 1fr .7fr;gap:12px;background:#102129;color:#d9e9e6;border-bottom:1px solid #254049;border-radius:0;text-align:left}.row span,.row em{color:#a2b8b4;font-style:normal;font-weight:500}.empty{padding:38px;color:#90a8a3;text-align:center}.camera video{width:100%;max-height:440px;background:#000;border-radius:10px}.auth{min-height:100vh;display:grid;grid-template-columns:1.3fr .7fr;align-items:center;background:radial-gradient(circle at 18% 12%,#173d42,transparent 37%),#09131a;padding:8vw}.auth h1{font-size:clamp(40px,5vw,70px)}.auth i{color:#36c6a3}.auth form{background:#eff7f5;color:#102129;padding:38px;border-radius:16px;max-width:420px}.auth form p{color:#607674}.auth input{display:block;width:100%;padding:13px;margin:12px 0;border:1px solid #b8cbc7;border-radius:8px}.auth button{width:100%;margin-top:10px}.auth a{display:block;color:#127e67;font-size:13px;margin-top:18px;cursor:pointer}.auth small{color:#b72236}@media(max-width:800px){aside{width:68px;padding:25px 8px}.brand{font-size:0;margin:0 12px 30px}.brand span{font-size:25px}nav button,.logout{font-size:0;padding:13px}.page{padding:35px 22px}.cards{grid-template-columns:repeat(2,1fr)}.result,.auth{grid-template-columns:1fr}.auth{padding:35px}.row{grid-template-columns:1fr}.row span{display:none}}
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: #09131a;
+  color: #edf6f4;
+  font-family: Manrope, Arial, sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}
+
+
+/* =========================================================
+   APP SHELL
+========================================================= */
+
+.shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+aside {
+  width: 245px;
+  padding: 28px 16px;
+  background: #0c1920;
+  border-right: 1px solid #1b3037;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.brand {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 12px 44px;
+}
+
+.brand span,
+.brand b {
+  color: #36c6a3;
+}
+
+nav {
+  display: grid;
+  gap: 5px;
+}
+
+button {
+  border-radius: 9px;
+  padding: 12px 14px;
+  background: #36c6a3;
+  color: #06211b;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+nav button,
+.logout {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: transparent;
+  color: #aabdb9;
+  text-align: left;
+}
+
+nav button:hover,
+.active {
+  background: #173038 !important;
+  color: #fff !important;
+}
+
+.logout {
+  margin-top: auto;
+}
+
+.logout:hover {
+  background: #173038;
+  color: #fff;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.page {
+  padding: 54px clamp(24px, 5vw, 80px);
+  max-width: 1280px;
+  width: 100%;
+  min-width: 0;
+}
+
+header h1,
+.auth h1 {
+  font-size: clamp(30px, 4vw, 46px);
+  margin: 8px 0;
+}
+
+header > p:last-child,
+.auth section > p {
+  color: #91a8a4;
+  max-width: 620px;
+  line-height: 1.6;
+}
+
+.eyebrow {
+  font: 12px 'DM Mono', monospace;
+  letter-spacing: .14em;
+  color: #36c6a3;
+}
+
+
+/* =========================================================
+   DASHBOARD CARDS
+========================================================= */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  margin: 38px 0;
+}
+
+.cards article,
+.chart,
+.result > section,
+.upload,
+.camera,
+.table {
+  background: #102129;
+  border: 1px solid #1c363d;
+  border-radius: 14px;
+  padding: 22px;
+}
+
+.cards span {
+  display: block;
+  color: #9ab0ac;
+  font-size: 13px;
+}
+
+.cards strong {
+  font-size: 28px;
+  display: block;
+  margin-top: 11px;
+}
+
+.chart {
+  max-width: 800px;
+}
+
+.chart h3 {
+  margin-top: 0;
+}
+
+
+/* =========================================================
+   IMAGE / VIDEO UPLOAD
+========================================================= */
+
+.upload,
+.camera {
+  margin-top: 36px;
+  text-align: center;
+  max-width: 690px;
+  padding: 52px;
+}
+
+.upload input {
+  display: block;
+  margin: 20px auto;
+  max-width: 100%;
+}
+
+.upload button {
+  display: block;
+  margin: 22px auto 0;
+}
+
+.upload button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   GPS LOCATION — UPLOAD PAGE
+========================================================= */
+
+.location-box {
+  margin: 22px auto;
+  padding: 18px;
+  max-width: 520px;
+
+  background: #0b1b22;
+  border: 1px solid #36c6a3;
+  border-radius: 14px;
+
+  text-align: left;
+
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, .18);
+}
+
+.location-box strong {
+  color: #36c6a3;
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+
+.location-box p {
+  margin: 7px 0;
+  color: #a9bfbb;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.location-box .coordinates {
+  margin-top: 12px;
+  padding: 12px;
+  background: #102930;
+  border-radius: 9px;
+
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #dceae7;
+}
+
+.location-box .location-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.location-box .location-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #36c6a3;
+  display: inline-block;
+
+  box-shadow:
+    0 0 10px rgba(54, 198, 163, .7);
+}
+
+.location-box .location-error {
+  color: #ff8d9a;
+}
+
+.location-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 12px;
+  padding: 11px 15px;
+
+  background: #36c6a3;
+  color: #06211b;
+
+  border: 0;
+  border-radius: 9px;
+
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.location-button:hover {
+  background: #45d6b2;
+}
+
+.location-button:disabled {
+  opacity: .55;
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   GPS RESULT BOX
+========================================================= */
+
+.gps-result {
+  margin-top: 20px;
+  padding: 16px;
+
+  background: #0b1b22;
+  border: 1px solid #1c4643;
+  border-radius: 12px;
+}
+
+.gps-result h4 {
+  margin: 0 0 10px;
+  color: #36c6a3;
+
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.gps-result p {
+  margin: 5px 0;
+  color: #a9bfbb;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.gps-result .coordinates {
+  margin-top: 10px;
+  padding: 10px;
+
+  background: #102930;
+  border-radius: 8px;
+
+  color: #dceae7;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   GPS MAP CONTAINER
+========================================================= */
+
+.gps-map-wrapper {
+  width: 100%;
+  margin-top: 16px;
+
+  border-radius: 12px;
+  overflow: hidden;
+
+  background: #102129;
+}
+
+
+/* =========================================================
+   PLACE NAME HEADER
+   Example:
+   Bengaluru, Karnataka, India
+========================================================= */
+
+.place-name {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  width: 100%;
+  padding: 14px 16px;
+
+  background: #102d35;
+
+  border: 1px solid #28515a;
+  border-bottom: 0;
+
+  min-height: 68px;
+}
+
+
+/* Location icon box */
+
+.place-icon {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  background: #173f47;
+  color: #36c6a3;
+
+  box-shadow:
+    0 0 15px rgba(54, 198, 163, .08);
+}
+
+
+/* Place text */
+
+.place-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.place-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .12em;
+
+  color: #6f9992;
+}
+
+.place-info strong {
+  display: block;
+
+  color: #edf6f4;
+
+  font-size: 15px;
+  line-height: 1.35;
+
+  margin: 0;
+
+  word-break: break-word;
+}
+
+.place-info small {
+  display: block;
+
+  color: #8fa8a3;
+
+  font-size: 10px;
+  line-height: 1.4;
+
+  word-break: break-word;
+}
+
+
+/* =========================================================
+   LEAFLET MAP
+========================================================= */
+
+.gps-map {
+  width: 100%;
+  overflow: hidden;
+}
+
+.gps-map .leaflet-container {
+  width: 100%;
+  height: 320px;
+
+  background: #102129;
+
+  font-family:
+    Manrope,
+    Arial,
+    sans-serif;
+}
+
+
+/* Leaflet zoom controls */
+
+.gps-map .leaflet-control-zoom {
+  border: 0 !important;
+
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, .25);
+}
+
+.gps-map .leaflet-control-zoom a {
+  color: #102129 !important;
+}
+
+
+/* Leaflet attribution */
+
+.gps-map .leaflet-control-attribution {
+  font-size: 9px;
+}
+
+
+/* Leaflet popup */
+
+.gps-map .leaflet-popup-content-wrapper {
+  border-radius: 10px;
+}
+
+.gps-map .leaflet-popup-content {
+  font-family:
+    Manrope,
+    Arial,
+    sans-serif;
+
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   RESULT PAGE
+========================================================= */
+
+.result {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 22px;
+  margin-top: 35px;
+  align-items: start;
+}
+
+.result img {
+  width: 100%;
+
+  border-radius: 14px;
+  border: 1px solid #244049;
+
+  max-height: 550px;
+
+  object-fit: contain;
+
+  background: #000;
+}
+
+.result video {
+  width: 100%;
+
+  border-radius: 14px;
+  border: 1px solid #244049;
+
+  max-height: 550px;
+
+  background: #000;
+}
+
+.small {
+  grid-template-columns: 1fr 1fr;
+  margin: 16px 0;
+}
+
+.small article {
+  padding: 15px;
+}
+
+.detection {
+  border-top: 1px solid #284148;
+
+  padding: 15px 0;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.detection span {
+  color: #a6b8b5;
+  font-size: 13px;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 16px;
+
+  background: #36c6a3;
+  color: #06211b;
+
+  padding: 12px 14px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-weight: 800;
+}
+
+.button:hover {
+  background: #45d6b2;
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+.table {
+  margin-top: 30px;
+}
+
+.row {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr .7fr;
+  gap: 12px;
+
+  background: #102129;
+  color: #d9e9e6;
+
+  border-bottom: 1px solid #254049;
+  border-radius: 0;
+
+  text-align: left;
+}
+
+.row:hover {
+  background: #153039;
+}
+
+.row span,
+.row em {
+  color: #a2b8b4;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.empty {
+  padding: 38px;
+  color: #90a8a3;
+  text-align: center;
+}
+
+
+/* =========================================================
+   LIVE CAMERA
+========================================================= */
+
+.camera video {
+  width: 100%;
+  max-height: 440px;
+
+  background: #000;
+
+  border-radius: 10px;
+
+  object-fit: contain;
+}
+
+.camera button {
+  margin-top: 20px;
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+.auth {
+  min-height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1.3fr .7fr;
+
+  align-items: center;
+
+  background:
+    radial-gradient(
+      circle at 18% 12%,
+      #173d42,
+      transparent 37%
+    ),
+    #09131a;
+
+  padding: 8vw;
+}
+
+.auth h1 {
+  font-size: clamp(40px, 5vw, 70px);
+}
+
+.auth i {
+  color: #36c6a3;
+}
+
+.auth form {
+  background: #eff7f5;
+  color: #102129;
+
+  padding: 38px;
+
+  border-radius: 16px;
+
+  max-width: 420px;
+}
+
+.auth form p {
+  color: #607674;
+}
+
+.auth input {
+  display: block;
+
+  width: 100%;
+
+  padding: 13px;
+
+  margin: 12px 0;
+
+  border: 1px solid #b8cbc7;
+
+  border-radius: 8px;
+}
+
+.auth button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.auth a {
+  display: block;
+
+  color: #127e67;
+
+  font-size: 13px;
+
+  margin-top: 18px;
+
+  cursor: pointer;
+}
+
+.auth small {
+  color: #b72236;
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+  .cards {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .result {
+    grid-template-columns: 1fr;
+  }
+
+  .auth {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+========================================================= */
+
+@media (max-width: 800px) {
+
+  aside {
+    width: 68px;
+    padding: 25px 8px;
+  }
+
+  .brand {
+    font-size: 0;
+    margin: 0 12px 30px;
+  }
+
+  .brand span {
+    font-size: 25px;
+  }
+
+  nav button,
+  .logout {
+    font-size: 0;
+    padding: 13px;
+  }
+
+  .page {
+    padding: 35px 22px;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .result,
+  .auth {
+    grid-template-columns: 1fr;
+  }
+
+  .auth {
+    padding: 35px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+
+  .row span {
+    display: none;
+  }
+
+  .location-box {
+    width: 100%;
+  }
+
+  .gps-map .leaflet-container {
+    height: 280px;
+  }
+
+  .place-name {
+    padding: 12px;
+  }
+
+  .place-info strong {
+    font-size: 13px;
+  }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+========================================================= */
+
+@media (max-width: 500px) {
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .upload,
+  .camera {
+    padding: 30px 18px;
+  }
+
+  header h1 {
+    font-size: 32px;
+  }
+
+  .auth {
+    padding: 24px;
+  }
+
+  .auth form {
+    padding: 25px;
+  }
+
+  .detection {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .place-name {
+    gap: 9px;
+    padding: 11px;
+  }
+
+  .place-icon {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  .place-info strong {
+    font-size: 12px;
+  }
+
+  .place-info small {
+    font-size: 9px;
+  }
+
+  .gps-map .leaflet-container {
+    height: 250px;
+  }
+
+}
