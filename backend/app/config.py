@@ -24,8 +24,11 @@ class Settings(BaseSettings):
     max_upload_size_mb: int = 100
     process_every_n_frames: int = 3
 
-    # Local frontend + future deployed frontend
-    cors_origins: str = "http://localhost:5173"
+    # Local development + Railway frontend
+    cors_origins: str = (
+        "http://localhost:5173,"
+        "https://roadvision-ai.up.railway.app"
+    )
 
     demo_mode: bool = False
 
