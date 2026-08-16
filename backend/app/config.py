@@ -26,9 +26,13 @@ class Settings(BaseSettings):
 
     # Local development + Railway frontend
     cors_origins: str = (
-        "http://localhost:5173,"
-        "https://roadvision-ai.up.railway.app"
-    )
+    "http://localhost:5173,"
+    "http://127.0.0.1:5173,"
+    "http://192.168.0.100:5173,"
+    "http://10.33.214.187:5173,"
+    "https://roadvision-ai.up.railway.app"
+)
+    
 
     demo_mode: bool = False
 

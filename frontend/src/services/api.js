@@ -3,7 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL ||
-    "https://roadvision-api.up.railway.app/api",
+    "http://192.168.0.100:8000/api",
 });
 
 api.interceptors.request.use((config) => {

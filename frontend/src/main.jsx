@@ -44,13 +44,13 @@ import './style.css';
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  'https://roadvision-ai-api.up.railway.app/api';
+  'https://roadvision-api.up.railway.app/api';
 
 
 /*
   Converts:
 
-  https://roadvision-ai-api.up.railway.app/api
+  https://roadvision-api.up.railway.app/api
   ->
   https://roadvision-ai-api.up.railway.app
 */
@@ -567,6 +567,15 @@ function UploadPage({ onResult }) {
             currentLocation.longitude
           )
         );
+
+        if (currentLocation.accuracy != null) {
+          data.append(
+            'location_accuracy',
+            String(
+              currentLocation.accuracy
+            )
+          );
+        }
 
       }
 
@@ -2574,7 +2583,7 @@ function App() {
         <div className="brand">
 
           <span>
-            ◒
+            ◉
           </span>
 
           {' '}RoadVision{' '}
@@ -2635,6 +2644,11 @@ function App() {
         </nav>
 
 
+        <div className="designed-by">
+          Designed by <span>Bhaskar</span>
+        </div>
+
+
         <button
           type="button"
           className="logout"
@@ -2682,3 +2696,4 @@ createRoot(
 ).render(
   <App />
 );
+
