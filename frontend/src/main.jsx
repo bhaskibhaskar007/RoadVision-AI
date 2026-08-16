@@ -20,7 +20,6 @@ import {
   FileText,
   Video,
   MapPin,
-  Navigation,
   RefreshCw
 } from 'lucide-react';
 
@@ -39,12 +38,109 @@ import './style.css';
 
 
 /* =========================================================
+   API / SERVER URL HELPERS
+========================================================= */
+
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  'http://localhost:8000/api';
+
+
+/*
+  Converts:
+
+  https://roadvision-ai-api.onrender.com/api
+  ->
+  https://roadvision-ai-api.onrender.com
+
+  and:
+
+  http://localhost:8000/api
+  ->
+  http://localhost:8000
+*/
+
+const SERVER_URL =
+  API_URL.replace(/\/api\/?$/, '');
+
+
+/*
+  Convert backend result URLs into
+  complete browser-accessible URLs.
+
+  Handles:
+
+  /uploads/result.jpg
+  uploads/result.jpg
+  http://localhost:8000/uploads/result.jpg
+  https://roadvision-ai-api.onrender.com/uploads/result.jpg
+*/
+
+function getMediaUrl(url) {
+
+  if (!url) {
+    return null;
+  }
+
+  /*
+    Already an absolute URL.
+  */
+
+  if (
+    url.startsWith('http://') ||
+    url.startsWith('https://')
+  ) {
+
+    /*
+      If backend accidentally returned localhost
+      while the frontend is using Render, replace
+      localhost with the current configured server.
+    */
+
+    if (
+      url.startsWith('http://localhost:8000') &&
+      !SERVER_URL.includes('localhost')
+    ) {
+
+      return (
+        SERVER_URL +
+        url.replace(
+          'http://localhost:8000',
+          ''
+        )
+      );
+
+    }
+
+    return url;
+
+  }
+
+
+  /*
+    Relative URL.
+  */
+
+  if (url.startsWith('/')) {
+
+    return SERVER_URL + url;
+
+  }
+
+
+  return `${SERVER_URL}/${url}`;
+
+}
+
+
+/* =========================================================
    LEAFLET MARKER FIX
 ========================================================= */
 
 delete L.Icon.Default.prototype._getIconUrl;
 
 L.Icon.Default.mergeOptions({
+
   iconRetinaUrl:
     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
 
@@ -53,6 +149,7 @@ L.Icon.Default.mergeOptions({
 
   shadowUrl:
     'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png'
+
 });
 
 
@@ -61,11 +158,37 @@ L.Icon.Default.mergeOptions({
 ========================================================= */
 
 const nav = [
-  ['dashboard', LayoutDashboard, 'Dashboard'],
-  ['image', FileImage, 'Image Detection'],
-  ['video', Video, 'Video Detection'],
-  ['live', Camera, 'Live Camera'],
-  ['history', HistoryIcon, 'History']
+
+  [
+    'dashboard',
+    LayoutDashboard,
+    'Dashboard'
+  ],
+
+  [
+    'image',
+    FileImage,
+    'Image Detection'
+  ],
+
+  [
+    'video',
+    Video,
+    'Video Detection'
+  ],
+
+  [
+    'live',
+    Camera,
+    'Live Camera'
+  ],
+
+  [
+    'history',
+    HistoryIcon,
+    'History'
+  ]
+
 ];
 
 
@@ -75,14 +198,23 @@ const nav = [
 
 function Auth({ onLogin }) {
 
-  const [register, setRegister] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [register, setRegister] =
+    useState(false);
+
+  const [email, setEmail] =
+    useState('');
+
+  const [password, setPassword] =
+    useState('');
+
+  const [error, setError] =
+    useState('');
+
 
   const submit = async (e) => {
 
     e.preventDefault();
+
     setError('');
 
     try {
@@ -95,10 +227,12 @@ function Auth({ onLogin }) {
         }
       );
 
+
       localStorage.setItem(
         'roadvision_token',
         r.data.access_token
       );
+
 
       onLogin();
 
@@ -110,9 +244,12 @@ function Auth({ onLogin }) {
       );
 
     }
+
   };
 
+
   return (
+
     <main className="auth">
 
       <section>
@@ -134,6 +271,7 @@ function Auth({ onLogin }) {
 
       </section>
 
+
       <form onSubmit={submit}>
 
         <h2>
@@ -148,6 +286,7 @@ function Auth({ onLogin }) {
             : 'Sign in to your workspace.'}
         </p>
 
+
         <input
           placeholder="Work email"
           type="email"
@@ -157,6 +296,7 @@ function Auth({ onLogin }) {
           }
           required
         />
+
 
         <input
           placeholder="Password (8+ characters)"
@@ -169,32 +309,43 @@ function Auth({ onLogin }) {
           minLength="8"
         />
 
+
         {error && (
+
           <small>
             {error}
           </small>
+
         )}
 
+
         <button type="submit">
+
           {register
             ? 'Create account'
             : 'Sign in'}
+
         </button>
+
 
         <a
           onClick={() =>
             setRegister(!register)
           }
         >
+
           {register
             ? 'Already have an account? Sign in'
             : 'New here? Create an account'}
+
         </a>
 
       </form>
 
     </main>
+
   );
+
 }
 
 
@@ -204,53 +355,61 @@ function Auth({ onLogin }) {
 
 function getCurrentLocation() {
 
-  return new Promise((resolve, reject) => {
+  return new Promise(
+    (resolve, reject) => {
 
-    if (!navigator.geolocation) {
+      if (!navigator.geolocation) {
 
-      reject(
-        new Error(
-          'GPS is not supported by this browser.'
-        )
-      );
+        reject(
+          new Error(
+            'GPS is not supported by this browser.'
+          )
+        );
 
-      return;
-    }
+        return;
 
-    navigator.geolocation.getCurrentPosition(
-
-      (position) => {
-
-        resolve({
-
-          latitude:
-            position.coords.latitude,
-
-          longitude:
-            position.coords.longitude,
-
-          accuracy:
-            position.coords.accuracy
-
-        });
-
-      },
-
-      (error) => {
-
-        reject(error);
-
-      },
-
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 0
       }
 
-    );
 
-  });
+      navigator.geolocation.getCurrentPosition(
+
+        (position) => {
+
+          resolve({
+
+            latitude:
+              position.coords.latitude,
+
+            longitude:
+              position.coords.longitude,
+
+            accuracy:
+              position.coords.accuracy
+
+          });
+
+        },
+
+        (error) => {
+
+          reject(error);
+
+        },
+
+        {
+
+          enableHighAccuracy: true,
+
+          timeout: 15000,
+
+          maximumAge: 0
+
+        }
+
+      );
+
+    }
+  );
 
 }
 
@@ -277,13 +436,10 @@ function UploadPage({ onResult }) {
     useState(null);
 
 
-  /* -------------------------------------------------------
-     GET GPS
-  ------------------------------------------------------- */
-
   const getLocation = async () => {
 
     setLocationLoading(true);
+
     setMessage('');
 
     try {
@@ -334,10 +490,6 @@ function UploadPage({ onResult }) {
   };
 
 
-  /* -------------------------------------------------------
-     SEND IMAGE
-  ------------------------------------------------------- */
-
   const send = async () => {
 
     if (!file) {
@@ -347,18 +499,20 @@ function UploadPage({ onResult }) {
       );
 
       return;
+
     }
 
+
     setLoading(true);
+
     setMessage('');
+
 
     try {
 
       let currentLocation =
         location;
 
-
-      /* AUTOMATIC GPS */
 
       if (!currentLocation) {
 
@@ -385,10 +539,9 @@ function UploadPage({ onResult }) {
       }
 
 
-      /* FORM DATA */
-
       const data =
         new FormData();
+
 
       data.append(
         'file',
@@ -420,16 +573,12 @@ function UploadPage({ onResult }) {
       );
 
 
-      /* BACKEND */
-
       const r =
         await api.post(
           '/detection/image',
           data
         );
 
-
-      /* RESULT */
 
       const result = {
 
@@ -496,8 +645,6 @@ function UploadPage({ onResult }) {
         </p>
 
 
-        {/* IMAGE */}
-
         <input
           type="file"
           accept="image/jpeg,image/png,image/webp"
@@ -523,10 +670,6 @@ function UploadPage({ onResult }) {
         )}
 
 
-        {/* =================================================
-            GPS BOX
-        ================================================= */}
-
         <div className="location-box">
 
           <div className="location-status">
@@ -549,6 +692,7 @@ function UploadPage({ onResult }) {
                 and associate it with this road
                 inspection.
               </p>
+
 
               <button
                 type="button"
@@ -576,6 +720,7 @@ function UploadPage({ onResult }) {
                 ✅ Location captured successfully.
               </p>
 
+
               <div className="coordinates">
 
                 <div>
@@ -602,6 +747,7 @@ function UploadPage({ onResult }) {
 
               </div>
 
+
               <button
                 type="button"
                 className="location-button"
@@ -626,8 +772,6 @@ function UploadPage({ onResult }) {
 
         </div>
 
-
-        {/* RUN */}
 
         <button
           type="button"
@@ -690,24 +834,30 @@ function VideoPage({ onResult }) {
 
     }
 
+
     setLoading(true);
+
     setMessage('');
+
 
     try {
 
       const form =
         new FormData();
 
+
       form.append(
         'file',
         file
       );
+
 
       const r =
         await api.post(
           '/detection/video',
           form
         );
+
 
       onResult(r.data);
 
@@ -746,6 +896,7 @@ function VideoPage({ onResult }) {
           MP4, AVI, MOV, or MKV · up to 100 MB
         </p>
 
+
         <input
           type="file"
           accept="video/mp4,video/x-msvideo,video/quicktime,video/x-matroska"
@@ -757,6 +908,7 @@ function VideoPage({ onResult }) {
           }
         />
 
+
         {file && (
 
           <b>
@@ -764,6 +916,7 @@ function VideoPage({ onResult }) {
           </b>
 
         )}
+
 
         <button
           type="button"
@@ -779,6 +932,7 @@ function VideoPage({ onResult }) {
             : 'Analyze video'}
 
         </button>
+
 
         {message && (
 
@@ -806,6 +960,7 @@ function Dashboard() {
   const [stats, setStats] =
     useState(null);
 
+
   useEffect(() => {
 
     api
@@ -826,11 +981,17 @@ function Dashboard() {
     stats || {
 
       total_inspections: 0,
+
       total_damages: 0,
+
       potholes: 0,
+
       cracks: 0,
+
       high_severity: 0,
+
       average_confidence: 0,
+
       types: {}
 
     };
@@ -904,6 +1065,7 @@ function Dashboard() {
           Damage type distribution
         </h3>
 
+
         <ResponsiveContainer
           width="100%"
           height={280}
@@ -956,7 +1118,6 @@ function Dashboard() {
 
 /* =========================================================
    REVERSE GEOCODING
-   GPS COORDINATES -> CITY / STATE / COUNTRY
 ========================================================= */
 
 async function reverseGeocode(
@@ -975,15 +1136,18 @@ async function reverseGeocode(
       `&zoom=18` +
       `&addressdetails=1`;
 
+
     const response =
       await fetch(
         url,
         {
           method: 'GET',
+
           headers: {
             Accept:
               'application/json'
           },
+
           signal
         }
       );
@@ -1005,11 +1169,6 @@ async function reverseGeocode(
     const address =
       data.address || {};
 
-
-    /*
-      Nominatim can return different
-      fields depending on the location.
-    */
 
     const city =
       address.city ||
@@ -1037,15 +1196,6 @@ async function reverseGeocode(
       '';
 
 
-    /*
-      Prefer:
-
-      Bengaluru, Karnataka, India
-
-      rather than the very long
-      OpenStreetMap display_name.
-    */
-
     const mainParts =
       [
         city,
@@ -1058,11 +1208,6 @@ async function reverseGeocode(
       mainParts.join(', ');
 
 
-    /*
-      If city/state/country could not
-      be extracted, use display_name.
-    */
-
     if (
       !shortName &&
       data.display_name
@@ -1073,10 +1218,6 @@ async function reverseGeocode(
 
     }
 
-
-    /*
-      Optional detailed location.
-    */
 
     const detailedParts =
       [
@@ -1134,8 +1275,11 @@ async function reverseGeocode(
         'Unable to determine place name',
 
       city: '',
+
       state: '',
+
       country: '',
+
       postcode: ''
 
     };
@@ -1173,10 +1317,6 @@ function InspectionMap({
   ] = useState(true);
 
 
-  /* -------------------------------------------------------
-     REVERSE GEOCODE
-  ------------------------------------------------------- */
-
   useEffect(() => {
 
     if (
@@ -1213,6 +1353,7 @@ function InspectionMap({
         ) {
 
           setPlace(result);
+
           setPlaceLoading(false);
 
         }
@@ -1246,10 +1387,6 @@ function InspectionMap({
 
     <div className="gps-map-wrapper">
 
-
-      {/* =================================================
-          LOCATION NAME
-      ================================================= */}
 
       <div className="place-name">
 
@@ -1298,10 +1435,6 @@ function InspectionMap({
 
       </div>
 
-
-      {/* =================================================
-          MAP
-      ================================================= */}
 
       <div className="gps-map">
 
@@ -1364,7 +1497,6 @@ function InspectionMap({
 
       </div>
 
-
     </div>
 
   );
@@ -1398,8 +1530,29 @@ function Result({ data }) {
   }
 
 
+  /*
+    IMPORTANT:
+
+    Do NOT use:
+
+    http://localhost:8000${data.result_url}
+
+    here.
+
+    The deployed frontend must use the Render
+    backend URL.
+  */
+
   const media =
-    `http://localhost:8000${data.result_url}`;
+    getMediaUrl(
+      data.result_url
+    );
+
+
+  const report =
+    getMediaUrl(
+      data.report_url
+    );
 
 
   const hasLocation =
@@ -1421,7 +1574,7 @@ function Result({ data }) {
       title={`Inspection #${data.id}`}
       sub={
         data.demo_notice ||
-        `${data.total_detections} detections recorded`
+        `${data.total_detections ?? 0} detections recorded`
       }
     >
 
@@ -1432,19 +1585,42 @@ function Result({ data }) {
             IMAGE / VIDEO
         ================================================= */}
 
-        {data.input_type === 'video' ? (
+        {media ? (
 
-          <video
-            controls
-            src={media}
-          />
+          data.input_type === 'video' ? (
+
+            <video
+              controls
+              src={media}
+            />
+
+          ) : (
+
+            <img
+              src={media}
+              alt="Road inspection result"
+              onError={(e) => {
+
+                console.error(
+                  'Unable to load result media:',
+                  media
+                );
+
+                e.currentTarget.style.display =
+                  'none';
+
+              }}
+            />
+
+          )
 
         ) : (
 
-          <img
-            src={media}
-            alt="Road inspection result"
-          />
+          <div className="empty">
+
+            Result media is not available.
+
+          </div>
 
         )}
 
@@ -1456,8 +1632,6 @@ function Result({ data }) {
           </h3>
 
 
-          {/* SUMMARY */}
-
           <div className="cards small">
 
             <article>
@@ -1467,7 +1641,7 @@ function Result({ data }) {
               </span>
 
               <strong>
-                {data.total_detections}
+                {data.total_detections ?? 0}
               </strong>
 
             </article>
@@ -1480,7 +1654,7 @@ function Result({ data }) {
               </span>
 
               <strong>
-                {data.highest_severity}
+                {data.highest_severity || 'None'}
               </strong>
 
             </article>
@@ -1502,7 +1676,7 @@ function Result({ data }) {
                   size={18}
                 />
 
-                Inspection Location
+                {' '}Inspection Location
 
               </h4>
 
@@ -1546,10 +1720,6 @@ function Result({ data }) {
               </div>
 
 
-              {/* =================================================
-                  MAP + CITY NAME
-              ================================================= */}
-
               <InspectionMap
                 latitude={
                   data.latitude
@@ -1559,8 +1729,6 @@ function Result({ data }) {
                 }
               />
 
-
-              {/* GOOGLE MAPS */}
 
               <a
                 className="button"
@@ -1585,7 +1753,7 @@ function Result({ data }) {
                   size={18}
                 />
 
-                Inspection Location
+                {' '}Inspection Location
 
               </h4>
 
@@ -1616,24 +1784,29 @@ function Result({ data }) {
                 >
 
                   <b>
-                    {x.class_name
-                      .replaceAll(
-                        '_',
-                        ' '
-                      )}
+                    {String(
+                      x.class_name ||
+                      'Unknown'
+                    ).replaceAll(
+                      '_',
+                      ' '
+                    )}
                   </b>
 
 
                   <span>
 
                     {Math.round(
-                      x.confidence * 100
+                      Number(
+                        x.confidence || 0
+                      ) * 100
                     )}
 
-                    % · {x.severity} ·{' '}
+                    % · {x.severity || 'Unknown'} ·{' '}
 
-                    {x.area_pixels
-                      .toLocaleString()}
+                    {Number(
+                      x.area_pixels || 0
+                    ).toLocaleString()}
 
                     {' '}px²
 
@@ -1655,15 +1828,15 @@ function Result({ data }) {
           )}
 
 
-          {/* PDF */}
+          {/* =================================================
+              PDF REPORT
+          ================================================= */}
 
-          {data.report_url && (
+          {report && (
 
             <a
               className="button"
-              href={
-                `http://localhost:8000${data.report_url}`
-              }
+              href={report}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -1726,7 +1899,9 @@ function Live({ onResult }) {
 
       }
 
+
       setOn(true);
+
       setMsg('');
 
     } catch {
@@ -2015,6 +2190,7 @@ function History({ setResult }) {
           items.map((i) => (
 
             <button
+              type="button"
               className="row"
               onClick={() =>
                 setResult(i)
@@ -2155,16 +2331,19 @@ function App() {
 
   if (page === 'dashboard') {
 
-    content = <Dashboard />;
+    content =
+      <Dashboard />;
 
   }
 
   else if (page === 'image') {
 
     content = (
+
       <UploadPage
         onResult={showResult}
       />
+
     );
 
   }
@@ -2172,9 +2351,11 @@ function App() {
   else if (page === 'video') {
 
     content = (
+
       <VideoPage
         onResult={showResult}
       />
+
     );
 
   }
@@ -2182,9 +2363,11 @@ function App() {
   else if (page === 'live') {
 
     content = (
+
       <Live
         onResult={showResult}
       />
+
     );
 
   }
@@ -2192,9 +2375,11 @@ function App() {
   else if (page === 'history') {
 
     content = (
+
       <History
         setResult={showResult}
       />
+
     );
 
   }
@@ -2202,9 +2387,11 @@ function App() {
   else {
 
     content = (
+
       <Result
         data={result}
       />
+
     );
 
   }

@@ -15,7 +15,6 @@ venv/
 # YOLO model weights
 *.pt
 *.pth
-*.onnx
 
 # Training outputs
 runs/
