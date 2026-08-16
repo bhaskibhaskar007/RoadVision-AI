@@ -40,21 +40,21 @@ app = FastAPI(
 # CORS CONFIGURATION
 # ============================================================
 
-# Keep origins configured through the backend settings
 configured_origins = [
     origin.strip()
     for origin in settings.cors_origins.split(",")
     if origin.strip()
 ]
 
-# Production frontend + local development frontend
+# Local development + Railway production frontend
 allowed_origins = list(
     dict.fromkeys(
         configured_origins
         + [
             "http://localhost:5173",
             "http://127.0.0.1:5173",
-            "https://roadvision-ai-1vf0.onrender.com",
+            "https://roadvision-ai.up.railway.app",
+            "https://roadvision-ai-api.up.railway.app",
         ]
     )
 )
