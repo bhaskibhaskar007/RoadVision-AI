@@ -1,8 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono&family=Manrope:wght@400;500;600;700;800&display=swap');
 
-
 /* =========================================================
-   GLOBAL
+   GLOBAL / RESET
 ========================================================= */
 
 * {
@@ -11,22 +10,35 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
   background: #09131a;
   color: #edf6f4;
   font-family: Manrope, Arial, sans-serif;
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
 button {
   border: 0;
+}
+
+img,
+video,
+canvas {
+  max-width: 100%;
 }
 
 
@@ -37,6 +49,8 @@ button {
 .shell {
   display: flex;
   min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 
@@ -46,18 +60,27 @@ button {
 
 aside {
   width: 245px;
+  min-width: 245px;
+  min-height: 100vh;
   padding: 28px 16px;
   background: #0c1920;
   border-right: 1px solid #1b3037;
+
   display: flex;
   flex-direction: column;
+
   flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  z-index: 100;
 }
 
 .brand {
   font-size: 19px;
   font-weight: 800;
   margin: 0 12px 44px;
+  white-space: nowrap;
 }
 
 .brand span,
@@ -89,8 +112,10 @@ nav button,
   display: flex;
   gap: 12px;
   align-items: center;
+
   background: transparent;
   color: #aabdb9;
+
   text-align: left;
 }
 
@@ -119,11 +144,17 @@ nav button:hover,
   max-width: 1280px;
   width: 100%;
   min-width: 0;
+  margin: 0 auto;
+}
+
+header {
+  min-width: 0;
 }
 
 header h1,
 .auth h1 {
   font-size: clamp(30px, 4vw, 46px);
+  line-height: 1.12;
   margin: 8px 0;
 }
 
@@ -147,7 +178,7 @@ header > p:last-child,
 
 .cards {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 14px;
   margin: 38px 0;
 }
@@ -162,6 +193,7 @@ header > p:last-child,
   border: 1px solid #1c363d;
   border-radius: 14px;
   padding: 22px;
+  min-width: 0;
 }
 
 .cards span {
@@ -178,6 +210,7 @@ header > p:last-child,
 
 .chart {
   max-width: 800px;
+  overflow: hidden;
 }
 
 .chart h3 {
@@ -215,7 +248,7 @@ header > p:last-child,
 
 
 /* =========================================================
-   GPS LOCATION — UPLOAD PAGE
+   GPS LOCATION
 ========================================================= */
 
 .location-box {
@@ -229,8 +262,9 @@ header > p:last-child,
 
   text-align: left;
 
-  box-shadow:
-    0 8px 25px rgba(0, 0, 0, .18);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, .18);
+
+  overflow: hidden;
 }
 
 .location-box strong {
@@ -256,6 +290,8 @@ header > p:last-child,
   font-size: 12px;
   line-height: 1.7;
   color: #dceae7;
+
+  overflow-x: auto;
 }
 
 .location-box .location-status {
@@ -268,12 +304,12 @@ header > p:last-child,
 .location-box .location-dot {
   width: 9px;
   height: 9px;
+  min-width: 9px;
   border-radius: 50%;
   background: #36c6a3;
   display: inline-block;
 
-  box-shadow:
-    0 0 10px rgba(54, 198, 163, .7);
+  box-shadow: 0 0 10px rgba(54, 198, 163, .7);
 }
 
 .location-box .location-error {
@@ -310,7 +346,7 @@ header > p:last-child,
 
 
 /* =========================================================
-   GPS RESULT BOX
+   GPS RESULT
 ========================================================= */
 
 .gps-result {
@@ -320,6 +356,8 @@ header > p:last-child,
   background: #0b1b22;
   border: 1px solid #1c4643;
   border-radius: 12px;
+
+  overflow: hidden;
 }
 
 .gps-result h4 {
@@ -349,11 +387,13 @@ header > p:last-child,
   font-family: 'DM Mono', monospace;
   font-size: 12px;
   line-height: 1.7;
+
+  overflow-x: auto;
 }
 
 
 /* =========================================================
-   GPS MAP CONTAINER
+   GPS MAP
 ========================================================= */
 
 .gps-map-wrapper {
@@ -365,13 +405,6 @@ header > p:last-child,
 
   background: #102129;
 }
-
-
-/* =========================================================
-   PLACE NAME HEADER
-   Example:
-   Bengaluru, Karnataka, India
-========================================================= */
 
 .place-name {
   display: flex;
@@ -387,10 +420,9 @@ header > p:last-child,
   border-bottom: 0;
 
   min-height: 68px;
+
+  overflow: hidden;
 }
-
-
-/* Location icon box */
 
 .place-icon {
   width: 40px;
@@ -406,12 +438,8 @@ header > p:last-child,
   background: #173f47;
   color: #36c6a3;
 
-  box-shadow:
-    0 0 15px rgba(54, 198, 163, .08);
+  box-shadow: 0 0 15px rgba(54, 198, 163, .08);
 }
-
-
-/* Place text */
 
 .place-info {
   min-width: 0;
@@ -440,7 +468,7 @@ header > p:last-child,
 
   margin: 0;
 
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .place-info small {
@@ -451,12 +479,12 @@ header > p:last-child,
   font-size: 10px;
   line-height: 1.4;
 
-  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 
 /* =========================================================
-   LEAFLET MAP
+   LEAFLET
 ========================================================= */
 
 .gps-map {
@@ -470,46 +498,29 @@ header > p:last-child,
 
   background: #102129;
 
-  font-family:
-    Manrope,
-    Arial,
-    sans-serif;
+  font-family: Manrope, Arial, sans-serif;
 }
-
-
-/* Leaflet zoom controls */
 
 .gps-map .leaflet-control-zoom {
   border: 0 !important;
 
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, .25);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
 }
 
 .gps-map .leaflet-control-zoom a {
   color: #102129 !important;
 }
 
-
-/* Leaflet attribution */
-
 .gps-map .leaflet-control-attribution {
   font-size: 9px;
 }
-
-
-/* Leaflet popup */
 
 .gps-map .leaflet-popup-content-wrapper {
   border-radius: 10px;
 }
 
 .gps-map .leaflet-popup-content {
-  font-family:
-    Manrope,
-    Arial,
-    sans-serif;
-
+  font-family: Manrope, Arial, sans-serif;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -521,13 +532,18 @@ header > p:last-child,
 
 .result {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
   gap: 22px;
   margin-top: 35px;
   align-items: start;
 }
 
+.result > * {
+  min-width: 0;
+}
+
 .result img {
+  display: block;
   width: 100%;
 
   border-radius: 14px;
@@ -541,6 +557,7 @@ header > p:last-child,
 }
 
 .result video {
+  display: block;
   width: 100%;
 
   border-radius: 14px;
@@ -558,6 +575,7 @@ header > p:last-child,
 
 .small article {
   padding: 15px;
+  min-width: 0;
 }
 
 .detection {
@@ -568,6 +586,8 @@ header > p:last-child,
   display: flex;
   justify-content: space-between;
   gap: 15px;
+
+  min-width: 0;
 }
 
 .detection span {
@@ -592,10 +612,33 @@ header > p:last-child,
   text-decoration: none;
 
   font-weight: 800;
+
+  transition: .2s ease;
 }
 
 .button:hover {
   background: #45d6b2;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   PDF / DOWNLOAD REPORT
+========================================================= */
+
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.report-actions .button {
+  margin-top: 0;
+}
+
+.download-report {
+  min-height: 44px;
 }
 
 
@@ -605,10 +648,12 @@ header > p:last-child,
 
 .table {
   margin-top: 30px;
+  overflow-x: auto;
 }
 
 .row {
   width: 100%;
+  min-width: 560px;
 
   display: grid;
   grid-template-columns: 2fr 2fr 1fr .7fr;
@@ -646,6 +691,7 @@ header > p:last-child,
 ========================================================= */
 
 .camera video {
+  display: block;
   width: 100%;
   max-height: 440px;
 
@@ -667,6 +713,7 @@ header > p:last-child,
 
 .auth {
   min-height: 100vh;
+  width: 100%;
 
   display: grid;
   grid-template-columns: 1.3fr .7fr;
@@ -681,7 +728,9 @@ header > p:last-child,
     ),
     #09131a;
 
-  padding: 8vw;
+  padding: clamp(30px, 8vw, 100px);
+
+  gap: 60px;
 }
 
 .auth h1 {
@@ -700,7 +749,10 @@ header > p:last-child,
 
   border-radius: 16px;
 
+  width: 100%;
   max-width: 420px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
 }
 
 .auth form p {
@@ -744,13 +796,47 @@ header > p:last-child,
 
 
 /* =========================================================
-   RESPONSIVE — TABLET
+   DESIGNED BY BHASKAR
 ========================================================= */
 
-@media (max-width: 1000px) {
+.designed-by {
+  margin-top: auto;
+  padding: 18px 12px 4px;
+
+  color: #607b77;
+
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+
+  letter-spacing: .08em;
+
+  text-align: center;
+
+  opacity: .85;
+}
+
+.designed-by span {
+  color: #36c6a3;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+
+  aside {
+    width: 210px;
+    min-width: 210px;
+  }
+
+  .page {
+    padding: 45px 35px;
+  }
 
   .cards {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .result {
@@ -759,112 +845,253 @@ header > p:last-child,
 
   .auth {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 35px;
   }
 
+  .auth form {
+    max-width: 500px;
+  }
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
+   MOBILE / TABLET NAVIGATION
 ========================================================= */
 
 @media (max-width: 800px) {
 
+  body {
+    overflow-x: hidden;
+  }
+
+  .shell {
+    display: block;
+    width: 100%;
+  }
+
+  /* Turn desktop sidebar into a mobile top navigation */
   aside {
-    width: 68px;
-    padding: 25px 8px;
+    position: relative;
+
+    width: 100%;
+    min-width: 0;
+    min-height: auto;
+    height: auto;
+
+    padding: 14px 12px;
+
+    border-right: 0;
+    border-bottom: 1px solid #1b3037;
+
+    display: block;
   }
 
   .brand {
-    font-size: 0;
-    margin: 0 12px 30px;
+    margin: 3px 8px 14px;
+    font-size: 18px;
+
+    text-align: center;
   }
 
-  .brand span {
-    font-size: 25px;
+  nav {
+    display: flex;
+    gap: 7px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 2px 2px 8px;
+
+    scrollbar-width: thin;
+  }
+
+  nav::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  nav::-webkit-scrollbar-thumb {
+    background: #28515a;
+    border-radius: 10px;
   }
 
   nav button,
   .logout {
-    font-size: 0;
-    padding: 13px;
+    flex: 0 0 auto;
+
+    font-size: 12px;
+
+    padding: 10px 12px;
+
+    white-space: nowrap;
+
+    border: 1px solid transparent;
+  }
+
+  nav button svg,
+  .logout svg {
+    flex-shrink: 0;
+  }
+
+  .logout {
+    margin-top: 8px;
+  }
+
+  .designed-by {
+    display: block;
+
+    margin: 8px 0 0;
+    padding: 8px 0 2px;
+
+    text-align: center;
   }
 
   .page {
-    padding: 35px 22px;
+    width: 100%;
+    max-width: none;
+
+    padding: 32px 18px 45px;
+  }
+
+  header h1,
+  .auth h1 {
+    font-size: clamp(30px, 8vw, 42px);
+  }
+
+  header > p:last-child {
+    font-size: 14px;
   }
 
   .cards {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+
+    margin: 25px 0;
   }
 
-  .result,
-  .auth {
-    grid-template-columns: 1fr;
+  .cards article {
+    padding: 17px;
   }
 
-  .auth {
-    padding: 35px;
+  .cards strong {
+    font-size: 25px;
   }
 
-  .row {
-    grid-template-columns: 1fr;
-  }
-
-  .row span {
-    display: none;
-  }
-
-  .location-box {
+  .upload,
+  .camera {
     width: 100%;
+    max-width: none;
+
+    padding: 30px 18px;
+  }
+
+  .result {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .result > section {
+    padding: 18px;
+  }
+
+  .small {
+    grid-template-columns: 1fr;
   }
 
   .gps-map .leaflet-container {
     height: 280px;
   }
 
-  .place-name {
-    padding: 12px;
+  .location-box {
+    width: 100%;
   }
 
-  .place-info strong {
-    font-size: 13px;
+  .auth {
+    display: flex;
+    flex-direction: column;
+
+    align-items: stretch;
+
+    min-height: 100vh;
+
+    padding: 35px 20px;
+
+    gap: 30px;
   }
 
+  .auth section {
+    width: 100%;
+  }
+
+  .auth form {
+    width: 100%;
+    max-width: none;
+
+    padding: 28px 22px;
+  }
 }
 
 
 /* =========================================================
-   RESPONSIVE — SMALL MOBILE
+   SMALL MOBILE
 ========================================================= */
 
 @media (max-width: 500px) {
+
+  .brand {
+    font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  nav {
+    gap: 6px;
+  }
+
+  nav button,
+  .logout {
+    font-size: 11px;
+    padding: 9px 10px;
+    gap: 7px;
+  }
+
+  .page {
+    padding: 25px 14px 40px;
+  }
 
   .cards {
     grid-template-columns: 1fr;
   }
 
+  .cards article {
+    padding: 18px;
+  }
+
   .upload,
   .camera {
-    padding: 30px 18px;
+    padding: 25px 14px;
   }
 
-  header h1 {
-    font-size: 32px;
+  .upload input[type="file"] {
+    width: 100%;
+    font-size: 12px;
   }
 
-  .auth {
-    padding: 24px;
+  .button,
+  .location-button {
+    width: 100%;
+    min-height: 44px;
   }
 
-  .auth form {
-    padding: 25px;
+  .report-actions {
+    flex-direction: column;
+  }
+
+  .report-actions .button {
+    width: 100%;
   }
 
   .detection {
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
   }
 
   .place-name {
@@ -888,6 +1115,1404 @@ header > p:last-child,
 
   .gps-map .leaflet-container {
     height: 250px;
+  }
+
+  .gps-map .leaflet-control-attribution {
+    font-size: 7px;
+  }
+
+  .auth {
+    padding: 25px 15px;
+  }
+
+  .auth form {
+    padding: 24px 18px;
+    border-radius: 14px;
+  }
+
+  .auth input {
+    min-height: 46px;
+  }
+
+  .auth button {
+    min-height: 46px;
+  }
+
+  .table {
+    margin-top: 20px;
+    padding: 12px;
+  }
+
+  .row {
+    min-width: 520px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 360px) {
+
+  .brand {
+    font-size: 15px;
+  }
+
+  nav button,
+  .logout {
+    font-size: 10px;
+    padding: 8px 9px;
+  }
+
+  .page {
+    padding-left: 11px;
+    padding-right: 11px;
+  }
+
+  .cards strong {
+    font-size: 23px;
+  }
+
+  .auth {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  button,
+  .button,
+  .location-button {
+    min-height: 44px;
+  }
+
+  nav button {
+    min-height: 42px;
+  }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+/* =========================================================
+   MOBILE RESPONSIVE DESIGN
+   RoadVision AI
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+  }
+
+  /* =========================
+     AUTH / LOGIN PAGE
+     ========================= */
+
+  .auth {
+    min-height: 100svh;
+    height: auto;
+    padding: 32px 18px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 36px;
+  }
+
+  .auth > section {
+    width: 100%;
+    max-width: 100%;
+    padding-top: 10px;
+  }
+
+  .auth > section .eyebrow {
+    font-size: 10px;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+
+  .auth > section h1 {
+    font-size: clamp(30px, 8vw, 42px);
+    line-height: 1.08;
+    margin: 0;
+  }
+
+  .auth > section h1 br {
+    display: none;
+  }
+
+  .auth > section > p:last-child {
+    font-size: 14px;
+    line-height: 1.6;
+    margin-top: 18px;
+    max-width: 430px;
+  }
+
+  .auth > form {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+    padding: 28px 22px;
+    border-radius: 20px;
+    margin: 0;
+  }
+
+  .auth > form h2 {
+    font-size: 25px;
+    margin-bottom: 8px;
+  }
+
+  .auth > form p {
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .auth > form input {
+    width: 100%;
+    min-height: 50px;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 13px 14px;
+    margin-bottom: 12px;
+  }
+
+  .auth > form button {
+    width: 100%;
+    min-height: 50px;
+    font-size: 16px;
+    margin-top: 8px;
+  }
+
+  .auth > form a {
+    display: block;
+    padding: 14px 4px 2px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  /* =========================
+     MAIN APPLICATION
+     ========================= */
+
+  .shell {
+    display: block;
+    width: 100%;
+    min-height: 100svh;
+  }
+
+  /* Turn desktop sidebar into mobile top navigation */
+
+  .shell > aside {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+    height: auto;
+    min-height: 64px;
+
+    padding: 10px 12px;
+
+    display: flex;
+    flex-direction: column;
+
+    box-sizing: border-box;
+  }
+
+  .brand {
+    padding: 6px 8px 10px;
+    font-size: 18px;
+  }
+
+  .shell > aside nav {
+    width: 100%;
+    display: flex;
+    gap: 7px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    padding: 2px 0 5px;
+
+    scrollbar-width: none;
+  }
+
+  .shell > aside nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .shell > aside nav button {
+    flex: 0 0 auto;
+
+    min-height: 44px;
+    padding: 9px 13px;
+
+    white-space: nowrap;
+    border-radius: 12px;
+
+    font-size: 13px;
+  }
+
+  .designed-by {
+    display: none;
+  }
+
+  .shell > aside .logout {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+
+    width: auto;
+    min-height: 42px;
+    padding: 8px 12px;
+
+    border-radius: 12px;
+  }
+
+  /* =========================
+     PAGE
+     ========================= */
+
+  .page {
+    width: 100%;
+    max-width: none;
+    box-sizing: border-box;
+
+    padding: 24px 16px 40px;
+  }
+
+  .page > header {
+    margin-bottom: 22px;
+  }
+
+  .page > header h1 {
+    font-size: clamp(27px, 8vw, 38px);
+    line-height: 1.1;
+  }
+
+  .page > header > p:last-child {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* =========================
+     CARDS
+     ========================= */
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cards article {
+    min-height: 90px;
+  }
+
+  .cards.small {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* =========================
+     UPLOAD
+     ========================= */
+
+  .upload {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px 16px;
+  }
+
+  .upload input[type="file"] {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .upload > button {
+    width: 100%;
+    min-height: 50px;
+  }
+
+  .location-box {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .location-button {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  /* =========================
+     RESULT
+     ========================= */
+
+  .result {
+    width: 100%;
+  }
+
+  .result > img,
+  .result > video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 65vh;
+    object-fit: contain;
+    border-radius: 14px;
+  }
+
+  .result section {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .gps-result {
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .gps-map-wrapper,
+  .gps-map {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .gps-map .leaflet-container {
+    width: 100% !important;
+    height: 280px !important;
+  }
+
+  .coordinates {
+    overflow-wrap: anywhere;
+  }
+
+  .result .button {
+    width: 100%;
+    min-height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-sizing: border-box;
+  }
+
+  /* =========================
+     DETECTIONS
+     ========================= */
+
+  .detection {
+    width: 100%;
+    box-sizing: border-box;
+
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  /* =========================
+     REPORTS / HISTORY
+     ========================= */
+
+  .table {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .row {
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 8px;
+    padding: 16px;
+  }
+
+  .row > div {
+    width: 100%;
+  }
+
+  .row .button,
+  .row > button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  /* =========================
+     CAMERA
+     ========================= */
+
+  .camera {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .camera video {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 240px;
+    object-fit: cover;
+    border-radius: 16px;
+  }
+
+  .camera button {
+    width: 100%;
+    min-height: 50px;
+    margin-top: 10px;
+  }
+
+  /* =========================
+     CHART
+     ========================= */
+
+  .chart {
+    width: 100%;
+    overflow-x: auto;
+    box-sizing: border-box;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .auth {
+    padding: 24px 14px 30px;
+    gap: 28px;
+  }
+
+  .auth > section h1 {
+    font-size: 31px;
+  }
+
+  .auth > section > p:last-child {
+    font-size: 13px;
+  }
+
+  .auth > form {
+    padding: 24px 18px;
+    border-radius: 18px;
+  }
+
+  .auth > form h2 {
+    font-size: 23px;
+  }
+
+  .page {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .cards.small {
+    grid-template-columns: 1fr;
+  }
+
+  .gps-map .leaflet-container {
+    height: 250px !important;
+  }
+}
+
+/* =========================================================
+   ROADVISION AI - MOBILE APP RESPONSIVE MODE
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* ---------- GLOBAL MOBILE RESET ---------- */
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+
+  /* =======================================================
+     APP SHELL
+     ======================================================= */
+
+  .shell {
+    display: block !important;
+    width: 100% !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+    overflow-x: hidden;
+    padding-bottom: 76px;
+  }
+
+
+  /* =======================================================
+     SIDEBAR -> MOBILE BOTTOM NAVIGATION
+     ======================================================= */
+
+  .shell > aside {
+    position: fixed !important;
+
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+
+    top: auto !important;
+
+    width: 100% !important;
+    height: 72px !important;
+
+    min-width: 0 !important;
+    max-width: none !important;
+
+    z-index: 9999;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+
+    padding: 7px 8px calc(7px + env(safe-area-inset-bottom)) !important;
+
+    border-right: none !important;
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    background:
+      rgba(5, 18, 25, 0.96) !important;
+
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scrollbar-width: none;
+  }
+
+  .shell > aside::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  /* ---------- BRAND ---------- */
+
+  .shell > aside .brand {
+    display: none !important;
+  }
+
+
+  /* ---------- NAV ---------- */
+
+  .shell > aside nav {
+    display: flex !important;
+    flex: 1 1 auto;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    height: 100%;
+
+    gap: 4px !important;
+
+    align-items: center !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    scrollbar-width: none;
+  }
+
+  .shell > aside nav::-webkit-scrollbar {
+    display: none;
+  }
+
+
+  .shell > aside nav button,
+  .shell > aside > nav > button {
+    flex: 0 0 auto !important;
+
+    width: 66px !important;
+    min-width: 66px !important;
+    height: 58px !important;
+
+    padding: 5px 3px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 3px !important;
+
+    border-radius: 12px !important;
+
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+  }
+
+
+  .shell > aside nav button svg {
+    width: 19px !important;
+    height: 19px !important;
+    flex: 0 0 auto;
+  }
+
+
+  .shell > aside nav button.active {
+    background: rgba(54, 198, 163, 0.16) !important;
+    color: #36c6a3 !important;
+  }
+
+
+  /* ---------- LOGOUT ---------- */
+
+  .shell > aside .logout {
+    flex: 0 0 auto !important;
+
+    width: 62px !important;
+    min-width: 62px !important;
+    height: 58px !important;
+
+    margin: 0 !important;
+    padding: 5px 2px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 3px !important;
+
+    border-radius: 12px !important;
+
+    font-size: 10px !important;
+    line-height: 1.1 !important;
+  }
+
+  .shell > aside .logout svg {
+    width: 19px !important;
+    height: 19px !important;
+  }
+
+
+  /* =======================================================
+     MAIN PAGE
+     ======================================================= */
+
+  .page {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    margin: 0 !important;
+
+    padding:
+      24px
+      14px
+      30px
+      14px !important;
+
+    overflow-x: hidden;
+  }
+
+
+  /* ---------- PAGE HEADER ---------- */
+
+  .page > header {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-bottom: 22px !important;
+  }
+
+  .page > header h1 {
+    font-size: clamp(28px, 8vw, 38px) !important;
+
+    line-height: 1.1 !important;
+
+    margin:
+      6px
+      0
+      10px !important;
+
+    word-break: normal;
+  }
+
+  .page > header p {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  .eyebrow {
+    font-size: 10px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+
+  /* =======================================================
+     DASHBOARD CARDS
+     ======================================================= */
+
+  .cards {
+    width: 100% !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 10px !important;
+
+    overflow: hidden;
+  }
+
+
+  .cards article {
+    min-width: 0 !important;
+    width: 100% !important;
+
+    padding: 17px 14px !important;
+
+    border-radius: 15px !important;
+
+    overflow: hidden;
+  }
+
+
+  .cards article span {
+    display: block;
+
+    font-size: 11px !important;
+
+    line-height: 1.3 !important;
+
+    white-space: normal !important;
+  }
+
+
+  .cards article strong {
+    display: block;
+
+    margin-top: 7px;
+
+    font-size: 25px !important;
+
+    line-height: 1 !important;
+  }
+
+
+  /* Small result cards */
+
+  .cards.small {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr)) !important;
+  }
+
+
+  /* =======================================================
+     CHART
+     ======================================================= */
+
+  .chart {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    margin-top: 16px !important;
+
+    padding: 16px 10px !important;
+
+    overflow: hidden !important;
+
+    border-radius: 16px !important;
+  }
+
+
+  .chart h3 {
+    padding-left: 5px;
+
+    font-size: 17px !important;
+  }
+
+
+  .chart > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+
+  /* Prevent Recharts from forcing desktop width */
+
+  .recharts-responsive-container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+
+  .recharts-wrapper {
+    max-width: 100% !important;
+  }
+
+
+  /* =======================================================
+     UPLOAD / DETECTION
+     ======================================================= */
+
+  .upload {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    padding: 22px 16px !important;
+
+    border-radius: 17px !important;
+
+    overflow: hidden;
+  }
+
+
+  .upload input[type="file"] {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    font-size: 13px !important;
+  }
+
+
+  .upload button {
+    width: 100% !important;
+
+    min-height: 48px;
+
+    margin-top: 10px;
+
+    font-size: 14px !important;
+  }
+
+
+  /* =======================================================
+     GPS LOCATION BOX
+     ======================================================= */
+
+  .location-box {
+    width: 100% !important;
+
+    margin-top: 16px !important;
+
+    padding: 16px !important;
+
+    border-radius: 15px !important;
+
+    overflow: hidden;
+  }
+
+
+  .location-box p {
+    font-size: 13px !important;
+    line-height: 1.5 !important;
+  }
+
+
+  .location-button {
+    width: 100% !important;
+
+    min-height: 46px;
+  }
+
+
+  .coordinates {
+    width: 100% !important;
+
+    display: grid;
+
+    gap: 7px;
+
+    overflow-wrap: anywhere;
+
+    font-size: 12px !important;
+  }
+
+
+  /* =======================================================
+     RESULT PAGE
+     ======================================================= */
+
+  .result {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    overflow: hidden;
+  }
+
+
+  .result > img,
+  .result > video {
+    display: block;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+
+    border-radius: 15px !important;
+
+    object-fit: contain;
+  }
+
+
+  .result section {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    margin-top: 16px;
+  }
+
+
+  .result section h3 {
+    font-size: 18px !important;
+  }
+
+
+  .detection {
+    width: 100% !important;
+
+    padding: 13px !important;
+
+    margin-bottom: 8px !important;
+
+    overflow: hidden;
+
+    border-radius: 13px !important;
+  }
+
+
+  .detection span {
+    font-size: 12px !important;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =======================================================
+     GPS RESULT / MAP
+     ======================================================= */
+
+  .gps-result {
+    width: 100% !important;
+
+    padding: 15px !important;
+
+    margin-top: 15px !important;
+
+    border-radius: 15px !important;
+
+    overflow: hidden;
+  }
+
+
+  .gps-map-wrapper {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow: hidden;
+  }
+
+
+  .gps-map {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow: hidden;
+
+    border-radius: 13px;
+  }
+
+
+  .gps-map .leaflet-container {
+    width: 100% !important;
+
+    height: 280px !important;
+  }
+
+
+  .place-name {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    display: flex;
+
+    gap: 10px;
+
+    overflow: hidden;
+  }
+
+
+  .place-info {
+    min-width: 0;
+  }
+
+
+  .place-info strong,
+  .place-info small {
+    display: block;
+
+    overflow-wrap: anywhere;
+  }
+
+
+  /* =======================================================
+     BUTTONS
+     ======================================================= */
+
+  .button {
+    display: flex !important;
+
+    width: 100% !important;
+
+    min-height: 46px;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    margin-top: 12px !important;
+
+    text-align: center;
+  }
+
+
+  /* =======================================================
+     REPORTS / HISTORY
+     ======================================================= */
+
+  .table {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow: visible !important;
+  }
+
+
+  .row {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: stretch !important;
+
+    gap: 8px !important;
+
+    padding: 15px !important;
+
+    margin-bottom: 10px !important;
+
+    border-radius: 15px !important;
+
+    overflow: hidden;
+  }
+
+
+  .row > div {
+    min-width: 0 !important;
+  }
+
+
+  .row span,
+  .row b,
+  .row em {
+    overflow-wrap: anywhere;
+  }
+
+
+  .row .button {
+    width: 100% !important;
+  }
+
+
+  /* =======================================================
+     LIVE CAMERA
+     ======================================================= */
+
+  .camera {
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    overflow: hidden;
+  }
+
+
+  .camera video {
+    display: block;
+
+    width: 100% !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+
+    min-height: 230px;
+
+    max-height: 60vh;
+
+    object-fit: cover;
+
+    border-radius: 16px;
+  }
+
+
+  .camera button {
+    width: 100% !important;
+
+    min-height: 48px;
+
+    margin-top: 10px;
+  }
+
+
+  /* =======================================================
+     AUTH PAGE
+     ======================================================= */
+
+  .auth {
+    width: 100% !important;
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    justify-content: center !important;
+
+    align-items: center !important;
+
+    gap: 25px !important;
+
+    padding:
+      28px
+      16px
+      35px !important;
+
+    overflow-y: auto !important;
+  }
+
+
+  .auth > section {
+    width: 100% !important;
+
+    max-width: 500px !important;
+
+    text-align: left !important;
+  }
+
+
+  .auth > section h1 {
+    font-size: clamp(31px, 9vw, 48px) !important;
+
+    line-height: 1.08 !important;
+
+    margin: 8px 0 12px !important;
+  }
+
+
+  .auth > section p:not(.eyebrow) {
+    font-size: 13px !important;
+
+    line-height: 1.5 !important;
+  }
+
+
+  .auth form {
+    width: 100% !important;
+
+    max-width: 430px !important;
+
+    margin: 0 !important;
+
+    padding: 24px 18px !important;
+
+    border-radius: 18px !important;
+  }
+
+
+  .auth form h2 {
+    font-size: 25px !important;
+
+    margin-bottom: 8px !important;
+  }
+
+
+  .auth form p {
+    font-size: 13px !important;
+  }
+
+
+  .auth input {
+    width: 100% !important;
+
+    min-height: 48px;
+
+    font-size: 15px !important;
+
+    padding: 12px !important;
+  }
+
+
+  .auth form button {
+    width: 100% !important;
+
+    min-height: 48px;
+
+    font-size: 15px !important;
+  }
+
+
+  /* =======================================================
+     DESIGNED BY BHASKAR
+     ======================================================= */
+
+  .shell::after {
+    content: "Designed by Bhaskar";
+
+    position: fixed;
+
+    left: 50%;
+
+    bottom: 78px;
+
+    transform: translateX(-50%);
+
+    z-index: 100;
+
+    font-size: 9px;
+
+    letter-spacing: 1.4px;
+
+    color: rgba(54, 198, 163, 0.55);
+
+    white-space: nowrap;
+
+    pointer-events: none;
+  }
+
+
+  /* =======================================================
+     REMOVE HORIZONTAL OVERFLOW FROM COMMON ELEMENTS
+     ======================================================= */
+
+  img,
+  video,
+  canvas,
+  svg,
+  iframe {
+    max-width: 100%;
+  }
+
+
+  pre,
+  code {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+  .page {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+
+  .cards {
+    gap: 8px !important;
+  }
+
+
+  .cards article {
+    padding: 14px 11px !important;
+  }
+
+
+  .cards article strong {
+    font-size: 22px !important;
+  }
+
+
+  .shell > aside nav button {
+    width: 61px !important;
+    min-width: 61px !important;
+
+    font-size: 9px !important;
+  }
+
+
+  .shell > aside .logout {
+    width: 58px !important;
+    min-width: 58px !important;
   }
 
 }
