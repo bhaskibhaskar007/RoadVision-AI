@@ -20,7 +20,8 @@ import {
   FileText,
   Video,
   MapPin,
-  RefreshCw
+  RefreshCw,
+  Download
 } from 'lucide-react';
 
 import {
@@ -183,6 +184,12 @@ const nav = [
     'history',
     HistoryIcon,
     'History'
+  ],
+
+  [
+    'reports',
+    FileText,
+    'Reports'
   ]
 
 ];
@@ -1545,12 +1552,6 @@ function Result({ data }) {
     );
 
 
-  const report =
-    getMediaUrl(
-      data.report_url
-    );
-
-
   const hasLocation =
     data.latitude !== undefined &&
     data.latitude !== null &&
@@ -1828,20 +1829,17 @@ function Result({ data }) {
               PDF REPORT
           ================================================= */}
 
-          {report && (
+          <button
+            type="button"
+            className="button"
+            onClick={() => downloadReport(data.id)}
+          >
 
-            <a
-              className="button"
-              href={report}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
+            <Download size={17} />
 
-              📄 Download PDF report
+            Download PDF report
 
-            </a>
-
-          )}
+          </button>
 
         </section>
 
@@ -2124,6 +2122,174 @@ function Live({ onResult }) {
 
 
 /* =========================================================
+   PDF REPORT DOWNLOAD
+========================================================= */
+
+async function downloadReport(inspectionId) {
+
+  try {
+
+    const response =
+      await api.get(
+        `/reports/${inspectionId}`,
+        {
+          responseType: 'blob'
+        }
+      );
+
+    const blob =
+      new Blob(
+        [response.data],
+        { type: 'application/pdf' }
+      );
+
+    const url =
+      window.URL.createObjectURL(blob);
+
+    const link =
+      document.createElement('a');
+
+    link.href = url;
+    link.download =
+      `roadvision-inspection-${inspectionId}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.URL.revokeObjectURL(url);
+
+  } catch (error) {
+
+    console.error(
+      'Report download failed:',
+      error
+    );
+
+    alert(
+      error.response?.data?.detail ||
+      'Unable to generate/download the PDF report.'
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   REPORTS PAGE
+========================================================= */
+
+function Reports() {
+
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [downloading, setDownloading] = useState(null);
+
+  useEffect(() => {
+
+    api.get('/inspections')
+      .then((r) => {
+        setItems(
+          Array.isArray(r.data) ? r.data : []
+        );
+      })
+      .catch((error) => {
+        console.error('Unable to load reports:', error);
+        setItems([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+  }, []);
+
+  const handleDownload = async (id) => {
+
+    setDownloading(id);
+
+    try {
+      await downloadReport(id);
+    } finally {
+      setDownloading(null);
+    }
+
+  };
+
+  return (
+
+    <Page
+      title="Inspection reports"
+      sub="Generate and download PDF reports for your saved road inspections."
+    >
+
+      <div className="table">
+
+        {loading ? (
+
+          <div className="empty">
+            Loading inspections...
+          </div>
+
+        ) : items.length === 0 ? (
+
+          <div className="empty">
+            No inspections available for reporting yet.
+          </div>
+
+        ) : (
+
+          items.map((item) => (
+
+            <div className="row" key={item.id}>
+
+              <div>
+                <b>Inspection #{item.id}</b>
+                <span>{item.filename}</span>
+                <span>
+                  {new Date(item.created_at).toLocaleString()}
+                </span>
+              </div>
+
+              <span>
+                {item.total_detections ?? 0} detections
+              </span>
+
+              <em>
+                {item.highest_severity || 'None'}
+              </em>
+
+              <button
+                type="button"
+                className="button"
+                onClick={() => handleDownload(item.id)}
+                disabled={downloading === item.id}
+              >
+
+                <Download size={16} />
+
+                {downloading === item.id
+                  ? 'Generating...'
+                  : 'Download PDF'}
+
+              </button>
+
+            </div>
+
+          ))
+
+        )}
+
+      </div>
+
+    </Page>
+
+  );
+
+}
+
+
+/* =========================================================
    HISTORY
 ========================================================= */
 
@@ -2377,6 +2543,12 @@ function App() {
       />
 
     );
+
+  }
+
+  else if (page === 'reports') {
+
+    content = <Reports />;
 
   }
 

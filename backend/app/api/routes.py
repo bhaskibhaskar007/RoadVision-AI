@@ -99,11 +99,8 @@ def inspection_json(i):
             else None
         ),
 
-        "report_url": (
-            f"/api/reports/{i.id}"
-            if i.report_path
-            else None
-        ),
+        # PDF is generated lazily by GET /api/reports/{id}.
+        "report_url": f"/api/reports/{i.id}",
 
         # Individual detections
         "detections": [
