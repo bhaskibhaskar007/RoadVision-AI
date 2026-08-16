@@ -2,6 +2,7 @@ import logging
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.config import settings
 from app.database.database import Base, engine
@@ -33,6 +34,25 @@ app = FastAPI(
     title="RoadVision AI",
     version="1.0.0",
     description="Road-damage inspection API",
+)
+
+
+# ============================================================
+# STATIC FILES
+# ============================================================
+
+# Serve processed detection images
+app.mount(
+    "/results",
+    StaticFiles(directory=str(settings.results_dir)),
+    name="results",
+)
+
+# Serve uploaded files
+app.mount(
+    "/uploads",
+    StaticFiles(directory=str(settings.upload_dir)),
+    name="uploads",
 )
 
 
