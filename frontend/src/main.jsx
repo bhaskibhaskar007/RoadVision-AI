@@ -43,21 +43,15 @@ import './style.css';
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
-  'http://localhost:8000/api';
+  'https://roadvision-ai-api.up.railway.app/api';
 
 
 /*
   Converts:
 
-  https://roadvision-ai-api.onrender.com/api
+  https://roadvision-ai-api.up.railway.app/api
   ->
-  https://roadvision-ai-api.onrender.com
-
-  and:
-
-  http://localhost:8000/api
-  ->
-  http://localhost:8000
+  https://roadvision-ai-api.up.railway.app
 */
 
 const SERVER_URL =
@@ -72,8 +66,10 @@ const SERVER_URL =
 
   /uploads/result.jpg
   uploads/result.jpg
+  /uploads/result.jpg
+  uploads/result.jpg
   http://localhost:8000/uploads/result.jpg
-  https://roadvision-ai-api.onrender.com/uploads/result.jpg
+  https://roadvision-ai-api.up.railway.app/uploads/result.jpg
 */
 
 function getMediaUrl(url) {
@@ -97,19 +93,19 @@ function getMediaUrl(url) {
       localhost with the current configured server.
     */
 
-    if (
-      url.startsWith('http://localhost:8000') &&
-      !SERVER_URL.includes('localhost')
-    ) {
+    const localBackendPrefixes = [
+      'http://localhost:8000',
+      'http://127.0.0.1:8000',
+      'http://0.0.0.0:8000'
+    ];
 
-      return (
-        SERVER_URL +
-        url.replace(
-          'http://localhost:8000',
-          ''
-        )
+    const localPrefix =
+      localBackendPrefixes.find((prefix) =>
+        url.startsWith(prefix)
       );
 
+    if (localPrefix) {
+      return SERVER_URL + url.slice(localPrefix.length);
     }
 
     return url;
@@ -1539,7 +1535,7 @@ function Result({ data }) {
 
     here.
 
-    The deployed frontend must use the Render
+    The deployed frontend must use the Railway
     backend URL.
   */
 
