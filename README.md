@@ -1,6 +1,6 @@
 ## 🌐 Live Project
 
-🚀 [Open RoadVision AI](roadvision-ai.up.railway.app)
+🚀 roadvision-ai.up.railway.app
 
 # RoadVision AI
 
